@@ -6,66 +6,80 @@ This is a thin JRuby wrapper for the [Android Market API](http://code.google.com
 It's a new project and only some parts of the protocol have been implemented. I decided to build on top of Java/JRuby because the native Ruby Protocolbuffer implementation ([ruby-protobuf](http://code.google.com/p/ruby-protobuf/)) could not properly handle the [.proto file](http://github.com/jberkel/android-market-api/blob/master/AndroidMarketApi/proto/market.proto) used by the API.
 
 ## Synopsis
-    require 'supermarket'
-    session = Supermarket::Session.new
 
-    # search apps for term 'foo' return results as json
-    puts session.search("foo").to_json
+```ruby
+require 'supermarket'
+session = Supermarket::Session.new
 
-    # retrieve comments for an app by app id as xml
-    puts session.comments("com.example.my.project").to_xml
+# search apps for term 'foo' return results as json
+puts session.search("foo").to_json
 
+# retrieve comments for an app by app id as xml
+puts session.comments("com.example.my.project").to_xml
+```
 
 ## Installation
 
-    $ gem install supermarket
+```ruby
+$ gem install supermarket
+```
 
 You will need to provide your Google market credentials in ~/.supermarket.yml:
 
-    ---
-    login: foo@gmail.com
-    password: secret
+```yml
+login: foo@gmail.com
+password: secret
+```
 
 ## Command line usage
 
 ### Searching
 
-    $ market search ruboto | jsonpretty
+```
+$ market search ruboto | jsonpretty
+
+{
+  "app": [
     {
-      "app": [
-        {
-          "rating": "4.642857142857143",
-          "title": "Ruboto IRB",
-          "ratingsCount": 14,
-          "creator": "Jan Berkel",
-          "appType": "APPLICATION",
-          "id": "9089465703133677000",
-          "packageName": "org.jruby.ruboto.irb",
-          "version": "0.1",
-          "versionCode": 1,
-          "creatorId": "\"Jan Berkel\"",
-          "ExtendedInfo": {
-            "category": "Tools",
-            "permissionId": [
-    ...
+      "rating": "4.642857142857143",
+      "title": "Ruboto IRB",
+      "ratingsCount": 14,
+      "creator": "Jan Berkel",
+      "appType": "APPLICATION",
+      "id": "9089465703133677000",
+      "packageName": "org.jruby.ruboto.irb",
+      "version": "0.1",
+      "versionCode": 1,
+      "creatorId": "\"Jan Berkel\"",
+      "ExtendedInfo": {
+        "category": "Tools",
+        "permissionId": [
+...
+
+```
 
 ### Comments
 
-    $ market comments org.jruby.ruboto.irb | jsonpretty
+```
+$ market comments org.jruby.ruboto.irb | jsonpretty
+
+{
+  "comments": [
     {
-      "comments": [
-        {
-          "rating": 5,
-          "creationTime": 1269710736815,
-          "authorName": "Nate Kidwell",
-          "text": "Tremendous application. More examples would be great (as would integrated rubydocs), but awesome all the same.",
-          "authorId": "04441815096871118032"
-        },
-    ...
+      "rating": 5,
+      "creationTime": 1269710736815,
+      "authorName": "Nate Kidwell",
+      "text": "Tremendous application. More examples would be great (as would integrated rubydocs), but awesome all the same.",
+      "authorId": "04441815096871118032"
+    },
+...
+```
 
 ### Screenshot
 
-    $ market imagedata org.jruby.ruboto.irb --image-out=image.jpg
+```
+$ market imagedata org.jruby.ruboto.irb --image-out=image.jpg
+```
 
 ### Google spreadsheet import
 
@@ -79,7 +93,9 @@ page
 
 Run:
 
+```
     comments2form app_id form_key
+```
 
 The initial import of comments will take a while, but subsequent runs will only
 add new comments to the form. Just stick the command in a crontab somewhere.
